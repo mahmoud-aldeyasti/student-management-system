@@ -10,17 +10,16 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<studentDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("studentCon")) ) ;
-
+    options.UseNpgsql(builder.Configuration.GetConnectionString("studentCon")));
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularCors", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("http://localhost:4200").AllowCredentials()
+        policy.AllowAnyOrigin()
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
-}); 
+});
 
 
 
