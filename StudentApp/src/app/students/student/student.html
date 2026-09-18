@@ -1,0 +1,18 @@
+<td>
+  <span class="badge-id">{{ index }}</span>
+</td>
+<td>{{ student.studName }}</td>
+<td>{{ student.mobileNo }}</td>
+<td>{{ student.email }}</td>
+<td>{{ student.city || '—' }}</td>
+<td class="text-center">
+  <div class="d-flex justify-content-center gap-1">
+    <button class="btn btn-sm btn-dark action-btn" title="Edit" (click)="onEdit()">
+      <i class="bi bi-pencil-fill"></i>
+    </button>
+    <!-- Direct click triggers the simplified deletion handler -->
+    <button class="btn btn-sm btn-danger action-btn" (click)="onDelete()" title="Delete">
+      <i class="bi bi-trash-fill"></i>
+    </button>
+  </div>
+</td>
