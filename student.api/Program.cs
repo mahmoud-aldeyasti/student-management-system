@@ -11,13 +11,18 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<studentDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("studentCon")));
+// Add CORS policy allowing only your specified Vercel frontend domains
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularCors", policy =>
+    options.AddPolicy("AllowVercelFrontend", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy.WithOrigins(
+                "https://student-management-system-pi-brown.vercel.app",
+                "https://student-management-system-git-main-mahmoud-aldeyasti.vercel.app",
+                "https://student-management-system-cyx8s2e6m-mahmoud-aldeyasti.vercel.app"
+            )
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
@@ -26,7 +31,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 
-app.UseCors("AllowAngularCors"); 
+app.UseCors("AllowVercelFrontend"); 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
