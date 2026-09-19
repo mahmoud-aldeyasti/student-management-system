@@ -8,6 +8,8 @@ import { Subject } from 'rxjs';
 })
 export class StudentService {
   private http = inject(HttpClient);
+  private apiUrl = 'https://student-management-system-lmzs.onrender.com/api/studentmaster';
+
   // Signal holding the state
   studentList = signal<studentModel[]>([]);
 
@@ -21,7 +23,7 @@ export class StudentService {
   }
 
   loadAllStudents() {
-    this.http.get<studentModel[]>('https://student-management-system-lmzs.onrender.com/api/studentmaster').subscribe({
+    this.http.get<studentModel[]>(this.apiUrl).subscribe({
       next: (result) => {
         this.studentList.set(result);
       },
@@ -32,7 +34,7 @@ export class StudentService {
   }
 
   DeleteStudent(id: number) {
-    this.http.delete(`https://student-management-system-lmzs.onrender.com/api/studentmaster/${id}`).subscribe({
+    this.http.delete(`${this.apiUrl}/${id}`).subscribe({
       next: () => {
         this.loadAllStudents(); // Refresh list after deletion
       },
@@ -43,7 +45,14 @@ export class StudentService {
   }
 
   saveStudent(studentobj: studentModel) {
-    this.http.post('https://student-management-system-lmzs.onrender.com/api/studentmaster', studentobj).subscribe({
+    // Check if the student has a valid ID to determine if it's an Update (PUT) or Create (POST)
+    const isUpdate = studentobj.studentId && studentobj.studentId > 0;
+    
+    const request$ = isUpdate
+      ? this.http.put(`${this.apiUrl}`, studentobj)
+      : this.http.post(this.apiUrl, studentobj);
+
+    request$.subscribe({
       next: () => {
         this.loadAllStudents(); // Refresh list after save/update
       },
