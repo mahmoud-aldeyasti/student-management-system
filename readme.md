@@ -1,6 +1,6 @@
 # 🎓 Student Management System
 
-> A full-stack CRUD application built with **ASP.NET Core Web API** and **Angular (Standalone Components)**, backed by **SQL Server** via Entity Framework Core, and styled with **Bootstrap 5**.
+> A full-stack CRUD application built with **ASP.NET Core Web API** (hosted on Render) and **Angular 18** (hosted on Vercel), backed by **Supabase PostgreSQL** via Entity Framework Core, and styled with **Bootstrap 5**.
 
 ---
 
@@ -8,8 +8,8 @@
 
 - **Add & Update Students** — Dynamic form handling that switches seamlessly between create and edit modes.
 - **Delete Records** — Smooth record removal with confirmation flows.
-- **RESTful Backend** — Fully configured with Entity Framework Core, custom CORS policies, and clean controller-based routing.
-- **Responsive UI** — Bootstrap 5 layout with Bootstrap Icons for a polished, mobile-friendly experience.
+- **RESTful Cloud Backend** — ASP.NET Core Web API hosted on Render with strict multi-origin CORS configuration.
+- **Responsive UI** — Angular frontend deployed on Vercel with clean client-side routing.
 
 ---
 
@@ -17,93 +17,102 @@
 
 | Layer | Technologies |
 |---|---|
-| **Backend** | C#, ASP.NET Core Web API, Entity Framework Core, SQL Server |
-| **Frontend** | Angular 18 (Standalone), TypeScript, RxJS, FormsModule |
+| **Backend** | C#, ASP.NET Core Web API, Entity Framework Core, Supabase PostgreSQL |
+| **Frontend** | Angular 18 (Standalone), TypeScript, RxJS |
 | **Styling** | Bootstrap 5, Bootstrap Icons |
+| **Hosting** | Render (API), Vercel (Frontend), Supabase (Database) |
+
+---
+
+## 🌐 Live Demo
+
+The application is fully deployed and accessible online:
+
+| Service | URL |
+|---|---|
+| **Frontend (Vercel)** | [student-management-system-pi-brown.vercel.app](https://student-management-system-pi-brown.vercel.app) |
+| **Backend API (Render)** | [student-management-system-lmzs.onrender.com/api/StudentMaster](https://student-management-system-lmzs.onrender.com/api/StudentMaster) |
+
+> **Note:** The Render free tier spins down after inactivity. The first API request may take 30–60 seconds to wake the server.
 
 ---
 
 ## 📁 Project Structure
 
 ```text
-StudentManagementSystem/
+student-management-system/
 │
-├── backend/                        # ASP.NET Core Web API
+├── student.api/                        # ASP.NET Core Web API
 │   ├── Controllers/
 │   │   └── StudentMasterController.cs
 │   ├── Model/
 │   │   ├── studentDbContext.cs
 │   │   └── Student.cs
-│   ├── Program.cs                  # CORS & EF Core configuration
-│   └── appsettings.json            # Connection strings
+│   ├── Program.cs                      # CORS & EF Core configuration
+│   └── appsettings.json                # Connection strings & logging config
 │
-└── frontend/                       # Angular application
+└── StudentApp/                         # Angular 18 frontend
     └── src/app/
-        ├── students/               # Student list component & row item
-        ├── student-form/           # Add / edit form component
-        └── services/               # StudentService (HttpClient wrapper)
+        ├── students/                   # Student list component & row item
+        ├── student-form/               # Add / edit form component
+        └── services/                   # StudentService (HttpClient wrapper)
 ```
 
 ---
 
-## 🔌 API Reference
-
-**Base URL:** `/api/StudentMaster`
-
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/StudentMaster` | Retrieve all student records |
-| `POST` | `/api/StudentMaster` | Add a new student record |
-| `PUT` | `/api/StudentMaster` | Update an existing student record |
-| `DELETE` | `/api/StudentMaster/{id}` | Delete a student by ID |
-
----
-
-## 🚀 Getting Started
+## 💻 Running Locally
 
 ### Prerequisites
 
-- [.NET SDK](https://dotnet.microsoft.com/download) (v7 or later)
+- [.NET SDK](https://dotnet.microsoft.com/download)
 - [Node.js & npm](https://nodejs.org/)
 - [Angular CLI](https://angular.io/cli) — `npm install -g @angular/cli`
-- SQL Server (local instance or SQL Server Express)
 
 ---
 
-### 1. Database Setup
+### 1. Configure the Backend
 
-Ensure SQL Server is running, then update the connection string in `backend/appsettings.json`:
+Navigate to the `student.api` directory and update `appsettings.json` with your database connection string. You can point this at a local SQL Server instance or your Supabase cloud pooler:
 
 ```json
-"ConnectionStrings": {
-  "studentCon": "Server=YOUR_SERVER_NAME;Database=studentDB;Trusted_Connection=true;Encrypt=True;TrustServerCertificate=True"
+{
+  "ConnectionStrings": {
+    "studentCon": "Host=aws-1-eu-west-1.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.your_project_id;Password=your_password;SSL Mode=Require;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
 }
 ```
 
-> Make sure your `studentMaster` table schema matches the `Student` model, or run EF Core migrations if configured.
-
----
-
-### 2. Run the Backend
+Then start the API:
 
 ```bash
-cd backend
+cd student.api
 dotnet run
 ```
 
-The API will be available at `http://localhost:5110`.
+The API will be available at `http://localhost:5110` (or `https://localhost:7xxx` for HTTPS).
 
 ---
 
-### 3. Run the Frontend
+### 2. Configure and Run the Frontend
+
+Before starting the Angular dev server, update the environment configuration inside `StudentApp` to point at your **local** API URL (e.g., `http://localhost:5110/api`) instead of the production Render URL.
+
+Then install dependencies and serve the app:
 
 ```bash
-cd frontend
+cd StudentApp
 npm install
 ng serve
 ```
 
-The app will be available at `http://localhost:4200` and will communicate with the local API automatically.
+Open your browser at `http://localhost:4200`.
 
 ---
 
