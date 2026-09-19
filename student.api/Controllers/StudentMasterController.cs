@@ -7,7 +7,7 @@ namespace student.api.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    [EnableCors("AllowAngularCors")]
+    [EnableCors("AllowVercelFrontend")]
     public class StudentMasterController : ControllerBase
     {
         private readonly studentDbContext _context; 
