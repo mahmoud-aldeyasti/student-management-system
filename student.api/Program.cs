@@ -13,7 +13,7 @@ builder.Services.AddDbContext<studentDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("studentCon")));
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowAngularCors", policy =>
     {
         policy.AllowAnyOrigin()
               .AllowAnyMethod()

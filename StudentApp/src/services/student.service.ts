@@ -21,7 +21,7 @@ export class StudentService {
   }
 
   loadAllStudents() {
-    this.http.get<studentModel[]>('https://localhost:7176/api/StudentMaster').subscribe({
+    this.http.get<studentModel[]>('https://student-management-system-lmzs.onrender.com/api/studentmaster').subscribe({
       next: (result) => {
         this.studentList.set(result);
       },
@@ -32,7 +32,7 @@ export class StudentService {
   }
 
   DeleteStudent(id: number) {
-    this.http.delete(`https://localhost:7176/api/StudentMaster/${id}`).subscribe({
+    this.http.delete(`https://student-management-system-lmzs.onrender.com/api/studentmaster/${id}`).subscribe({
       next: () => {
         this.loadAllStudents(); // Refresh list after deletion
       },
@@ -43,7 +43,7 @@ export class StudentService {
   }
 
   saveStudent(studentobj: studentModel) {
-    this.http.post('https://localhost:7176/api/StudentMaster', studentobj).subscribe({
+    this.http.post('https://student-management-system-lmzs.onrender.com/api/studentmaster', studentobj).subscribe({
       next: () => {
         this.loadAllStudents(); // Refresh list after save/update
       },
